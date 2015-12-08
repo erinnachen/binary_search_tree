@@ -34,12 +34,10 @@ class BinarySearchTree
       depth = 1
     elsif node.value == data
       depth = 0
+    elsif node.value > data
+      depth = 1 + insert_recursive(data,node.left_link)
     else
-      if node.value > data
-        depth = 1 + insert_recursive(data,node.left_link)
-      else
-        depth = 1 + insert_recursive(data,node.right_link)
-      end
+      depth = 1 + insert_recursive(data,node.right_link)
     end
   end
 
