@@ -72,6 +72,17 @@ class Node
     end
   end
 
+  def leaves
+    if is_leaf?
+      1
+    else
+      left_link.leaves + right_link.leaves
+    end
+  end
+
+  def height
+    1+[left_link.height, right_link.height].max
+  end
 
 end
 
@@ -104,7 +115,11 @@ class NullNode
     [Node.new(data), 0]
   end
 
-  def is_leaf?
-    false
+  def leaves
+    0
+  end
+
+  def height
+    0
   end
 end

@@ -245,4 +245,59 @@ class BinarySearchTreeTest < Minitest::Test
     assert_equal [-34,-17,-3,0,1,2,3,4,5,6,7,8,9,10],
     bst.sort
   end
+
+  def test_empty_tree_has_no_leaves
+    bst = BinarySearchTree.new
+    assert_equal 0, bst.leaves
+  end
+
+  def test_one_node_tree_has_one_leaf
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    assert_equal 1, bst.leaves
+  end
+
+  def test_multi_node_tree_has_leaves
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    bst.insert("a")
+    bst.insert("q")
+    bst.insert("c")
+    bst.insert("b")
+    assert_equal 2, bst.leaves
+  end
+
+  def test_empty_tree_has_no_height
+    bst = BinarySearchTree.new
+    assert_equal 0, bst.height
+  end
+
+  def test_one_node_tree_has_height_of_1
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    assert_equal 1, bst.height
+  end
+
+  def test_right_loaded_tree
+    bst = BinarySearchTree.new
+    ["a","b","c","d","e"].each {|c| bst.insert(c)}
+    assert_equal 5, bst.height
+  end
+
+  def test_left_loaded_tree
+    bst = BinarySearchTree.new
+    ["a","b","c","d","e"].reverse.each {|c| bst.insert(c)}
+    assert_equal 5, bst.height
+  end
+
+  def test_multi_noded_tree_depth
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    bst.insert("c")
+    bst.insert("a")
+    bst.insert("q")
+    bst.insert("t")
+    bst.insert("z")
+    assert_equal 4, bst.height
+  end
 end

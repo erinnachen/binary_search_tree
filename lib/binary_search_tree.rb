@@ -37,6 +37,10 @@ class BinarySearchTree
     root.sort
   end
 
+  def leaves
+    root.leaves
+  end
+
   def is_empty?
     !root
   end
@@ -46,6 +50,10 @@ class BinarySearchTree
     unless nums_in.nil?
       nums_in.each {|num| insert(num)}
     end
+  end
+
+  def height
+    root.height
   end
 end
 
