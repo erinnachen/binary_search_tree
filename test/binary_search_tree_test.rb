@@ -4,27 +4,27 @@ require 'binary_search_tree'
 class BinarySearchTreeTest < Minitest::Test
   def test_bst_starts_out_empty
     bst = BinarySearchTree.new
-    assert_nil bst.root
+    assert bst.root.nil?
   end
 
   def test_can_add_one_node
     bst = BinarySearchTree.new
-    assert_nil bst.root
+    assert bst.root.nil?
     dm = bst.insert("m")
-    refute_nil bst.root
+    refute bst.root.nil?
     assert_equal "m", bst.root.value
-    assert bst.is_leaf?(bst.root)
     assert_equal 0,dm
+    assert bst.root.is_leaf?
   end
 
   def test_can_add_node_to_the_left
     bst = BinarySearchTree.new
     bst.insert("m")
     dc = bst.insert("c")
-    refute bst.is_leaf?(bst.root)
-    assert_nil bst.root.right_link
+    refute bst.root.is_leaf?
+    assert bst.root.right_link.nil?
     assert_equal "c", bst.root.left_link.value
-    assert bst.is_leaf?(bst.root.left_link)
+    assert bst.root.left_link.is_leaf?
     assert_equal 1, dc
   end
 
@@ -32,10 +32,10 @@ class BinarySearchTreeTest < Minitest::Test
     bst = BinarySearchTree.new
     bst.insert("m")
     dq = bst.insert("q")
-    refute bst.is_leaf?(bst.root)
-    assert_nil bst.root.left_link
+    refute bst.root.is_leaf?
+    assert bst.root.left_link.nil?
     assert_equal "q", bst.root.right_link.value
-    assert bst.is_leaf?(bst.root.right_link)
+    assert bst.root.right_link.is_leaf?
     assert_equal 1, dq
   end
 
@@ -55,8 +55,8 @@ class BinarySearchTreeTest < Minitest::Test
     bst.insert("q")
     dz = bst.insert("z")
     assert_equal 2, dz
-    refute bst.is_leaf?(bst.root)
-    assert bst.is_leaf?(bst.root.right_link.right_link)
+    refute bst.root.is_leaf?
+    assert bst.root.right_link.right_link.is_leaf?
   end
 
   def test_inserting_a_repeat_does_not_change_the_tree
@@ -65,7 +65,7 @@ class BinarySearchTreeTest < Minitest::Test
     dm2 = bst.insert("m")
     assert_equal 0, dm
     assert_equal 0, dm2
-    assert bst.is_leaf?(bst.root)
+    assert bst.root.is_leaf?
     bst.insert("q")
     bst.insert("z")
     dz2 = bst.insert("z")
@@ -74,15 +74,15 @@ class BinarySearchTreeTest < Minitest::Test
 
   def test_empty_tree_does_not_include_anything
     bst = BinarySearchTree.new
-    refute bst.include?("")
-    refute bst.include?("a")
+    refute bst.root.include?("")
+    refute bst.root.include?("a")
   end
 
   def test_include_for_one_node_tree
     bst = BinarySearchTree.new
     bst.insert("m")
-    assert bst.include?("m")
-    refute bst.include?("c")
+    assert bst.root.include?("m")
+    refute bst.root.include?("c")
   end
 
   def test_include_for_multi_node_tree
@@ -91,9 +91,9 @@ class BinarySearchTreeTest < Minitest::Test
     bst.insert("c")
     bst.insert("q")
     bst.insert("a")
-    assert bst.include?("a")
-    assert bst.include?("q")
-    refute bst.include?("n")
+    assert bst.root.include?("a")
+    assert bst.root.include?("q")
+    refute bst.root.include?("n")
   end
 
   def test_empty_tree_does_not_have_a_max
@@ -170,6 +170,12 @@ class BinarySearchTreeTest < Minitest::Test
     bst = BinarySearchTree.new
     bst.insert("m")
     assert_equal 0, bst.depth_of("m")
+  end
+
+  def test_depth_returns_nil_for_element_not_in_tree
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    assert_nil bst.depth_of("a")
   end
 
   def test_depth_for_multi_node_tree
