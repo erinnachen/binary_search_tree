@@ -7,12 +7,12 @@ class Node
     @right_link = NullNode.new
   end
 
-  def change_right_link(link)
-    @right_link = link
-  end
-
   def change_left_link(link)
     @left_link = link
+  end
+
+  def change_right_link(link)
+    @right_link = link
   end
 
   def insert(data)
@@ -31,7 +31,7 @@ class Node
   end
 
   def is_leaf?
-    left_link.nil? && right_link.nil?
+    right_link.nil? && left_link.nil?
   end
 
   def max
@@ -84,6 +84,28 @@ class Node
     1+[left_link.height, right_link.height].max
   end
 
+  def delete(data)
+    if value == data
+      if is_leaf?
+        [NullNode.new(), data]
+      elsif right_link && left_link.nil?
+        [right_link, data]
+      elsif right_link.nil? && left_link
+        [left_link, data]
+      else
+        @value = left_link.max
+        @left_link, d1 = left_link.delete(value)
+        [self, data]
+      end
+    elsif data > value
+      @right_link, del = right_link.delete(data)
+      [self, del]
+    else data < value
+      @left_link, del = left_link.delete(data)
+      [self, del]
+    end
+  end
+
 end
 
 class NullNode
@@ -121,5 +143,13 @@ class NullNode
 
   def height
     0
+  end
+
+  def delete(data)
+    [self, nil]
+  end
+
+  def value
+    nil
   end
 end

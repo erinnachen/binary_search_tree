@@ -18,23 +18,19 @@ class NodeTest < Minitest::Test
     assert n.right_link.nil?
   end
 
-  def test_can_change_the_right_link
+  def test_can_change_left_link
     n = Node.new("Generic node")
-    assert n.left_link.nil?
+    n.change_left_link("new left link")
+    assert_equal "new left link", n.left_link
     assert n.right_link.nil?
-    n.change_right_link("My Right Link")
-    assert n.left_link.nil?
-    assert_equal "My Right Link", n.right_link
-    assert_equal "Generic node", n.value
   end
 
-  def test_can_change_the_left_link
+  def test_can_change_right_link
     n = Node.new("Generic node")
-    assert_nil n.left_link
-    assert_nil n.right_link
-    n.change_left_link("My Left Link")
-    assert_equal "My Left Link", n.left_link
-    assert_nil n.right_link
-    assert_equal "Generic node", n.value
+    n.change_right_link("new right link")
+    assert_equal "new right link", n.right_link
+    assert n.left_link.nil?
   end
+
+  
 end

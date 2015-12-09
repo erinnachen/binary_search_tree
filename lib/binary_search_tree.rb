@@ -21,6 +21,10 @@ class BinarySearchTree
     depth
   end
 
+  def include?(data)
+    root.include?(data)
+  end
+
   def max
     root.max
   end
@@ -41,10 +45,6 @@ class BinarySearchTree
     root.leaves
   end
 
-  def is_empty?
-    !root
-  end
-
   def load(filename)
     nums_in = reader.read_numbers(filename)
     unless nums_in.nil?
@@ -55,9 +55,17 @@ class BinarySearchTree
   def height
     root.height
   end
+
+  def delete(data)
+    @root, data = root.delete(data)
+    data
+  end
 end
 
 if __FILE__ == $0
-  bst = BinarySearchTree.new
-  binding.pry
+  # bst = BinarySearchTree.new
+  # put_in_tree = "mcqkdlba".chars
+  # put_in_tree.each {|c| bst.insert(c)}
+  # bst.delete("c")
+  # bst #=>
 end

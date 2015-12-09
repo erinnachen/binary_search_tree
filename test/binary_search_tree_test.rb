@@ -74,15 +74,15 @@ class BinarySearchTreeTest < Minitest::Test
 
   def test_empty_tree_does_not_include_anything
     bst = BinarySearchTree.new
-    refute bst.root.include?("")
-    refute bst.root.include?("a")
+    refute bst.include?("")
+    refute bst.include?("a")
   end
 
   def test_include_for_one_node_tree
     bst = BinarySearchTree.new
     bst.insert("m")
-    assert bst.root.include?("m")
-    refute bst.root.include?("c")
+    assert bst.include?("m")
+    refute bst.include?("c")
   end
 
   def test_include_for_multi_node_tree
@@ -91,9 +91,9 @@ class BinarySearchTreeTest < Minitest::Test
     bst.insert("c")
     bst.insert("q")
     bst.insert("a")
-    assert bst.root.include?("a")
-    assert bst.root.include?("q")
-    refute bst.root.include?("n")
+    assert bst.include?("a")
+    assert bst.include?("q")
+    refute bst.include?("n")
   end
 
   def test_empty_tree_does_not_have_a_max
@@ -300,4 +300,85 @@ class BinarySearchTreeTest < Minitest::Test
     bst.insert("z")
     assert_equal 4, bst.height
   end
+
+  def test_cannot_delete_from_empty_tree
+    bst = BinarySearchTree.new
+    assert_nil bst.delete("m")
+  end
+
+  def test_delete_from_one_node_tree
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    del = bst.delete("m")
+    assert "m",del
+    assert bst.root.nil?
+  end
+
+  def test_delete_not_in_one_node_tree
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    del = bst.delete("a")
+    assert_nil del
+    assert bst.include?("m")
+  end
+
+  def test_delete_left_node_tree
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    bst.insert("a")
+    del = bst.delete("a")
+    assert_equal "a", del
+    assert bst.include?("m")
+    refute bst.include?("a")
+  end
+
+  def test_delete_right_node_tree
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    bst.insert("r")
+    assert bst.root.left_link.nil?
+    del = bst.delete("r")
+    assert_equal "r", del
+    assert bst.include?("m")
+    refute bst.include?("r")
+  end
+
+  def test_delete_node_from_tree_with_both_left_and_right_on_tree
+    bst = BinarySearchTree.new
+    bst.insert("m")
+    bst.insert("r")
+    bst.insert("c")
+    assert_equal "c",bst.root.left_link.value
+    assert_equal "r",bst.root.right_link.value
+    del = bst.delete("m")
+    assert_equal "m", del
+    refute bst.include?("m")
+    assert bst.include?("r")
+    assert bst.include?("c")
+  end
+
+  def test_delete_from_tree_more_than_two_levels
+    bst = BinarySearchTree.new
+    put_in_tree = "mcqkdlba".chars
+    put_in_tree.each {|c| bst.insert(c)}
+    assert_equal "a",bst.min
+    assert_equal "q",bst.max
+    del = bst.delete("c")
+    assert_equal "abdklmq", bst.sort.join
+    assert_equal "b", bst.root.left_link.value
+  end
+
+  def test_delete_from_random_tree
+    bst = BinarySearchTree.new
+    put_in_tree = (0..24).to_a.shuffle
+    put_in_tree.each {|d| bst.insert(d)}
+    assert_equal 0,bst.min
+    assert_equal 24,bst.max
+    d1 = bst.delete(12)
+    d2 = bst.delete(20)
+    put_in_tree.delete(12)
+    put_in_tree.delete(20)
+    assert_equal put_in_tree.sort, bst.sort
+  end
+
 end
