@@ -381,4 +381,15 @@ class BinarySearchTreeTest < Minitest::Test
     assert_equal put_in_tree.sort, bst.sort
   end
 
+  def test_delete_not_in_tree_from_random_tree
+    bst = BinarySearchTree.new
+    put_in_tree = (0..24).to_a.shuffle
+    put_in_tree.each {|d| bst.insert(d)}
+    del = bst.delete(33)
+    assert_nil del
+    assert_equal 0,bst.min
+    assert_equal 24,bst.max
+    assert_equal put_in_tree.sort, bst.sort
+  end
+
 end

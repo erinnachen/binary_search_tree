@@ -1,3 +1,4 @@
+require 'null_node'
 class Node
   attr_reader :value, :left_link,:right_link
 
@@ -15,6 +16,18 @@ class Node
     @right_link = link
   end
 
+  def is_leaf?
+    right_link.nil? && left_link.nil?
+  end
+
+  def only_has_right_branch?
+    right_link && left_link.nil?
+  end
+
+  def only_has_left_branch?
+    right_link.nil? && left_link
+  end
+
   def insert(data)
     if data > value
       @right_link, depth = right_link.insert(data)
@@ -28,10 +41,6 @@ class Node
 
   def include?(data)
     data == value || left_link.include?(data) ||right_link.include?(data)
-  end
-
-  def is_leaf?
-    right_link.nil? && left_link.nil?
   end
 
   def max
@@ -50,25 +59,25 @@ class Node
     end
   end
 
-  def sort
-    if is_leaf?
-      [value]
-    elsif left_link.nil?
-      [value]+right_link.sort
-    elsif right_link.nil?
-      left_link.sort+[value]
-    else
-      left_link.sort+[value]+right_link.sort
-    end
-  end
-
   def depth_of(data)
     if data == value
       0
     elsif data > value
-      1 + right_link.depth_of(data) unless right_link.nil?
+      1 + right_link.depth_of(data) unless right_link.depth_of(data).nil?
     elsif data < value
-      1 + left_link.depth_of(data) unless left_link.nil?
+      1 + left_link.depth_of(data) unless left_link.depth_of(data).nil?
+    end
+  end
+
+  def sort
+    if is_leaf?
+      [value]
+    elsif only_has_right_branch?
+      [value]+right_link.sort
+    elsif only_has_left_branch?
+      left_link.sort+[value]
+    else
+      left_link.sort+[value]+right_link.sort
     end
   end
 
@@ -88,9 +97,9 @@ class Node
     if value == data
       if is_leaf?
         [NullNode.new(), data]
-      elsif right_link && left_link.nil?
+      elsif only_has_right_branch?
         [right_link, data]
-      elsif right_link.nil? && left_link
+      elsif only_has_left_branch?
         [left_link, data]
       else
         @value = left_link.max
@@ -106,50 +115,4 @@ class Node
     end
   end
 
-end
-
-class NullNode
-  def nil?
-    true
-  end
-
-  def include?(data)
-    false
-  end
-
-  def max
-    nil
-  end
-
-  def min
-    nil
-  end
-
-  def sort
-    nil
-  end
-
-  def depth_of(data)
-    nil
-  end
-
-  def insert(data)
-    [Node.new(data), 0]
-  end
-
-  def leaves
-    0
-  end
-
-  def height
-    0
-  end
-
-  def delete(data)
-    [self, nil]
-  end
-
-  def value
-    nil
-  end
 end
