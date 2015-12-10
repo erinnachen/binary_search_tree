@@ -49,11 +49,10 @@ class BinarySearchTree
     nums_in = reader.read_numbers(filename)
     inserted = 0
     unless nums_in.nil?
+      nums_in = nums_in.uniq
       nums_in.each do |num|
-        unless include?(num)
-          insert(num)
-          inserted +=1
-        end
+        insert(num)
+        inserted +=1
       end
     end
     inserted
