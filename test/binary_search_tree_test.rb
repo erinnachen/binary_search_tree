@@ -161,6 +161,7 @@ class BinarySearchTreeTest < Minitest::Test
     assert_equal "a",bst.min
   end
 
+
   def test_empty_tree_has_no_depth
     bst = BinarySearchTree.new
     assert_nil bst.depth_of("m")
@@ -228,22 +229,19 @@ class BinarySearchTreeTest < Minitest::Test
   def test_load_with_empty_file
     bst = BinarySearchTree.new
     num_in = bst.load("test/support/empty.txt")
-    assert_nil num_in
+    assert_equal 0, num_in
   end
 
   def test_load_with_file_numbers_no_repeats
     bst = BinarySearchTree.new
     num_in = bst.load("test/support/simple_nums.txt")
-    refute_nil num_in
-    assert_equal [-31,-3,1,2,3,4,5,6,7,8,9,10,35,87],
-    bst.sort
+    assert_equal 14, num_in
   end
 
   def test_load_with_file_numbers_with_repeats
     bst = BinarySearchTree.new
     num_in = bst.load("test/support/simple_nums_repeats.txt")
-    assert_equal [-34,-17,-3,0,1,2,3,4,5,6,7,8,9,10],
-    bst.sort
+    assert_equal 14, num_in
   end
 
   def test_empty_tree_has_no_leaves

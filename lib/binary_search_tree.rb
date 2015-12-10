@@ -47,9 +47,16 @@ class BinarySearchTree
 
   def load(filename)
     nums_in = reader.read_numbers(filename)
+    inserted = 0
     unless nums_in.nil?
-      nums_in.each {|num| insert(num)}
+      nums_in.each do |num|
+        unless include?(num)
+          insert(num)
+          inserted +=1
+        end
+      end
     end
+    inserted
   end
 
   def height
